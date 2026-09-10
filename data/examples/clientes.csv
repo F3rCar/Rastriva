@@ -1,4 +1,6 @@
-cliente_id,nome
-1,Cliente Aurora
-2,Cliente Horizonte
-3,Cliente Ipê
+cliente_id,nome_exibicao,segmento,data_cadastro,unidade_id
+CLI-001,Cliente Alfa,recorrente,2025-11-10,UNI-CENTRO
+CLI-002,Cliente Beta,recorrente,2025-12-03,UNI-NORTE
+CLI-003,Cliente Gama,novo,2026-08-01,UNI-CENTRO
+CLI-004,Cliente Delta,recorrente,2026-05-15,UNI-CENTRO
+CLI-005,Cliente Epsilon,recorrente,2025-07-20,UNI-SUL

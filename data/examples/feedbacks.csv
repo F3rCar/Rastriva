@@ -1,4 +1,5 @@
-feedback_id,cliente_id,data,texto
-1,1,2026-08-02,Atendimento rápido e cordial
-2,2,2026-08-04,Produto entregue conforme o esperado
-3,3,2026-08-06,Gostaria de mais opções disponíveis
+feedback_id,cliente_id,data_feedback,texto,tipo_feedback,canal,motivo_confirmado
+FB-001,CLI-002,2026-06-05,"O preço aumentou, e ficou pesado para mim.",reclamacao,whatsapp,false
+FB-002,CLI-002,2026-06-12,Parei de frequentar porque o horário ficou incompatível.,cancelamento,formulario,true
+FB-003,CLI-004,2026-09-02,Atendimento rápido e muito bom.,avaliacao,google,false
+FB-004,,2026-08-20,A unidade costuma ficar lotada no início da noite.,pesquisa,formulario,false
