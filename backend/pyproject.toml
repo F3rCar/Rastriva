@@ -1,0 +1,25 @@
+[project]
+name = "rastriva-backend"
+version = "0.1.0"
+description = "API inicial do projeto Rastriva"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard-no-fastapi-cloud-cli]",
+    "pandas",
+    "pydantic-settings",
+    "python-multipart",
+]
+
+[dependency-groups]
+dev = [
+    "httpx",
+    "pytest",
+    "ruff",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88

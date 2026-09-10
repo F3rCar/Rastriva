@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+main {
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+button {
+  padding: 10px 16px;
+  color: #ffffff;
+  background: #2563eb;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#api-status {
+  min-height: 24px;
+}
