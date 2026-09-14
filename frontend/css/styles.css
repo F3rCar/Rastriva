@@ -1,27 +1,234 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: #1f2937;
-  background: #f3f4f6;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #111; }
+
+  .placeholder {
+    background: #d9d9d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    padding: 8px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+  }
+  header .logo { display: flex; align-items: center; gap: 8px; font-weight: bold; }
+  header nav { display: flex; gap: 32px; }
+  header nav a { text-decoration: none; color: inherit; }
+  .Logo_Rastriva {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* ---------- HERO / LANDING ---------- */
+  .hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px 32px 48px;
+    gap: 32px;
+  }
+  .hero-content { max-width: 480px; }
+  .hero-content h1 { font-size: 32px; margin-bottom: 16px; }
+  .hero-content p { margin-bottom: 24px; }
+ 
+  .hero-image {
+    width: 220px;
+    height: 190px;
+    flex-shrink: 0;
+  }
+
+  /* ---------- COMO FUNCIONA ---------- */
+  .how-it-works { padding: 0 32px 48px; }
+  .how-it-works h2 { margin-bottom: 24px; }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .step { padding: 16px; }
+  .step-label { font-size: 13px; margin-bottom: 8px; }
+  .step-box { height: 90px; }
+
+  .upload-btn {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 24px;
+    background: #3b6fe0;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 500px;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
 }
 
-main {
-  max-width: 600px;
-  margin: 80px auto;
-  padding: 32px;
-  background: #ffffff;
-  border-radius: 8px;
-}
+  /* ---------- DASHBOARD ---------- */
+  .dashboard {
+    padding: 32px;
+  }
+  .dashboard h1 { text-align: center; margin-bottom: 24px; }
 
-button {
-  padding: 10px 16px;
-  color: #ffffff;
-  background: #2563eb;
-  border: 0;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .metric-card {
+    padding: 16px;
+    text-align: left;
+    justify-content: flex-start;
+    height: 70px;
+  }
 
-#api-status {
-  min-height: 24px;
-}
+  .dashboard-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .chart-panel { flex: 1; }
+  .chart-panel h2 { font-size: 16px; margin-bottom: 12px; text-align: center; }
+  .chart-box {
+    height: 220px;
+    background: #d9d9d9;
+    padding: 12px;
+  }
+
+  .feedback-panel {
+    width: 220px;
+    background: #d9d9d9;
+    padding: 16px;
+  }
+  .feedback-panel h3 { font-size: 14px; margin-bottom: 16px; }
+  .feedback-item { margin-bottom: 16px; }
+  .feedback-item span { font-size: 12px; display: block; margin-bottom: 4px; }
+  .feedback-bar-track {
+    background: #fff;
+    border-radius: 8px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .feedback-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+  }
+  #feedback-preco-fill { background: #3b9fe0; }
+  #feedback-atendimento-fill { background: #3b6fe0; }
+  #feedback-feedbacks-fill { background: #e03b3b; }
+
+  .patterns-section h2 { font-size: 18px; margin-bottom: 8px; text-align: center; }
+  .patterns-legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .dot-disponibilidade { background: red; }
+  .dot-quantidade { background: blue; }
+  .dot-receita { background: green; }
+
+  .patterns-chart-box {
+    height: 200px;
+    background: #d9d9d9;
+    padding: 12px;
+  }
+
+  /* ---------- DIAGNÓSTICO COM IA ---------- */
+  .diagnostico { padding: 32px; }
+  .diagnostico h1 { text-align: center; margin-bottom: 8px; }
+  .diagnostico-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+
+  .diagnostico-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .diagnostico-resumo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .resumo-card {
+    justify-content: flex-start;
+    text-align: left;
+    padding: 16px;
+    min-height: 90px;
+  }
+  .resumo-card strong { display: block; font-size: 14px; margin-bottom: 6px; }
+  .resumo-card p { font-size: 12px; color: #555; }
+
+  .ai-response {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #d9d9d9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .ai-response-header {
+    padding: 12px 16px;
+    font-weight: bold;
+    font-size: 14px;
+    background: #c4c4c4;
+  }
+  .ai-response-body {
+    flex: 1;
+    min-height: 220px;
+    padding: 16px;
+    text-align: left;
+    align-items: flex-start;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .plano-acao h2 { font-size: 18px; margin-bottom: 16px; text-align: center; }
+  .plano-lista {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .plano-item {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 16px;
+    min-height: 100px;
+  }
+  .plano-prioridade {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: none;
+  }
+  .plano-item p { font-size: 12px; color: #555; }

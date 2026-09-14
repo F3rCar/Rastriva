@@ -1,19 +1,255 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rastriva</title>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <main>
-      <h1>Rastriva</h1>
-      <p>Esta é a estrutura inicial do projeto.</p>
-      <button id="test-api" type="button">Testar conexão com a API</button>
-      <p id="api-status" role="status" aria-live="polite"></p>
-    </main>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rastriva</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 
-    <script src="js/app.js"></script>
-  </body>
+<!-- ======== página de entrada ======== -->
+<section id="landing">
+
+  <header>
+    <div class="logo">
+      <img src="Logo_Rastriva.png" class="Logo_Rastriva" alt="Logo Rastriva">
+      <span>RASTRIVA</span>
+    </div>
+    <!-- navegação -->
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#diagnostico">Inteligencia artificial</a>
+      <a href="#">Sobre nós</a>
+    </nav>
+  </header>
+<!-- frases da minha cabeça-->
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Descubra por que seus clientes estão deixando de voltar.</h1>
+      <p>Seu cliente pode estar indo embora sem avisar. O Rastriva percebe os sinais e ajuda você a agir antes.</p>
+    </div>
+    <div class="hero-image placeholder">
+      Imagem de um dash
+    </div>
+  </div>
+<!-- cards que precisam deixar mais bonitinhos-->
+  <div class="how-it-works">
+    <h2>Como funciona?</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-label">1. Seus dados</div>
+        <div class="step-box placeholder"></div>
+      </div>
+      <div class="step">
+        <div class="step-label">2. Análise inteligente</div>
+        <div class="step-box placeholder"></div>
+      </div>
+      <div class="step">
+        <div class="step-label">3. Diagnóstico completo</div>
+        <div class="step-box placeholder"></div>
+      </div>
+      <div class="step">
+        <div class="step-label">4. Ação prioritária</div>
+        <div class="step-box placeholder"></div>
+      </div>
+    </div>
+    <div class="container">
+   <label class="upload-btn">
+    Upload do arquivo
+    <input type="file" class="input_arquivo" hidden>
+</label>
+ </div>
+
+</section>
+
+<!-- ======================= DASHBOARD (gráficos muito loucos) ======================= -->
+<section id="dashboard" class="dashboard">
+
+  <h1>Dashboard</h1>
+
+  <div class="metrics">
+    <div class="metric-card placeholder">Clientes analisados</div>
+    <div class="metric-card placeholder">Clientes em risco</div>
+    <div class="metric-card placeholder">Receita em risco</div>
+  </div>
+
+  <div class="dashboard-row">
+    <div class="chart-panel">
+      <h2>Análise dos consumidores</h2>
+      <div class="chart-box">
+        <canvas id="chartConsumidores"></canvas>
+      </div>
+    </div>
+
+    <div class="feedback-panel">
+      <h3>Feedbacks</h3>
+      <div class="feedback-item">
+        <span>Preço</span>
+        <div class="feedback-bar-track">
+          <div id="feedback-preco-fill" class="feedback-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="feedback-item">
+        <span>Atendimento</span>
+        <div class="feedback-bar-track">
+          <div id="feedback-atendimento-fill" class="feedback-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="feedback-item">
+        <span>Feedbacks</span>
+        <div class="feedback-bar-track">
+          <div id="feedback-feedbacks-fill" class="feedback-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="patterns-section">
+    <h2>Principais padrões</h2>
+    <div class="patterns-legend">
+      <div><span class="legend-dot dot-disponibilidade"></span>Disponibilidade</div>
+      <div><span class="legend-dot dot-quantidade"></span>Quantidade de compras</div>
+      <div><span class="legend-dot dot-receita"></span>Receita</div>
+    </div>
+    <div class="patterns-chart-box">
+      <canvas id="chartPadroes"></canvas>
+    </div>
+  </div>
+
+</section>
+<script>
+  // ---------- código para os gráficos funfarem ----------
+  
+  const ctxConsumidores = document.getElementById('chartConsumidores').getContext('2d');
+  new Chart(ctxConsumidores, {
+    type: 'bar',
+    data: {
+      labels: ['Clientes ativos', 'Clientes em queda', 'Clientes com possível risco', 'Clientes com histórico insuficiente'],
+      datasets: [{
+        label: 'Clientes',
+        data: [0, 0, 0, 0], // <- valores que vão colocar 
+        backgroundColor: ['#a020f0', '#3b9fe0', '#e0d63b', '#3b4fe0']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // ---------- Gráfico de linha: Principais padrões ----------
+  // Substituir os dados depois.
+  const ctxPadroes = document.getElementById('chartPadroes').getContext('2d');
+  new Chart(ctxPadroes, {
+    type: 'line',
+    data: {
+      labels: [], // <- ex: ['Jan', 'Fev', 'Mar', ...]
+      datasets: [
+        {
+          label: 'Disponibilidade',
+          data: [], // <- valores 
+          borderColor: 'red',
+          backgroundColor: 'red',
+          tension: 0.3
+        },
+        {
+          label: 'Quantidade de compras',
+          data: [], // <- valores 
+          borderColor: 'blue',
+          backgroundColor: 'blue',
+          tension: 0.3
+        },
+        {
+          label: 'Receita',
+          data: [], // <- valores 
+          borderColor: 'green',
+          backgroundColor: 'green',
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // ---------- Barras de Feedback ----------
+  document.getElementById('feedback-preco-fill').style.width = '0%';
+  document.getElementById('feedback-atendimento-fill').style.width = '0%';
+  document.getElementById('feedback-feedbacks-fill').style.width = '0%';
+</script>
+
+<!-- ======================= DIAGNÓSTICO COM IA ======================= -->
+<section id="diagnostico" class="diagnostico">
+
+  <h1>Diagnóstico com IA</h1>
+  <p class="diagnostico-subtitle">Baseado nos dados analisados, o agente identificou o problema e sugere um plano de ação.</p>
+
+  <div class="diagnostico-row">
+
+    <!-- parte da esquerda:resumo do problema -->
+    <div class="diagnostico-resumo">
+      <div class="resumo-card placeholder">
+        <div>
+          <strong>Problema identificado</strong>
+          <p>Texto gerado pela IA descrevendo o principal problema encontrado nos dados.</p>
+        </div>
+      </div>
+
+      <div class="resumo-card placeholder">
+        <div>
+          <strong>Causas prováveis</strong>
+          <p>Lista de causas apontadas pela IA (ex: preço, atendimento, tempo de resposta).</p>
+        </div>
+      </div>
+
+      <div class="resumo-card placeholder">
+        <div>
+          <strong>Clientes mais impactados</strong>
+          <p>Segmento ou grupo de clientes com maior risco, segundo a análise.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parte da resposta do agente de IA baseada no diagnóstico -->
+    <div class="ai-response">
+      <div class="ai-response-header">Resposta do agente de IA</div>
+      <div class="ai-response-body placeholder">
+        Texto gerado pela IA com a explicação e a solução sugerida para o problema identificado nos dados.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Plano de ação sugerido -->
+  <div class="plano-acao">
+    <h2>Plano de ação recomendado</h2>
+    <div class="plano-lista">
+      <div class="plano-item placeholder">
+        <span class="plano-prioridade">Alta prioridade</span>
+        <p>Ação sugerida pela IA para reduzir o risco identificado.</p>
+      </div>
+      <div class="plano-item placeholder">
+        <span class="plano-prioridade">Média prioridade</span>
+        <p>Ação sugerida pela IA para melhorar o indicador secundário.</p>
+      </div>
+      <div class="plano-item placeholder">
+        <span class="plano-prioridade">Baixa prioridade</span>
+        <p>Ação sugerida pela IA como melhoria de longo prazo.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+</body>
 </html>
