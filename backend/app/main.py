@@ -1,10 +1,10 @@
+from app.api.router import api_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.router import api_router
 
 app = FastAPI(title="Rastriva API")
 
-# Libera o acesso do frontend sem erro de CORS
+# Permite chamadas vindas do frontend (Live Server / porta 5500)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

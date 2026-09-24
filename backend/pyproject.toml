@@ -5,6 +5,8 @@ description = "API inicial do projeto Rastriva"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard-no-fastapi-cloud-cli]",
+    "google-genai>=2.25.0",
+    "openpyxl>=3.1.5",
     "pandas",
     "pydantic-settings",
     "python-multipart",
