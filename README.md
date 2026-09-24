@@ -21,3 +21,4 @@ A Rastriva é uma plataforma desenvolvida para ajudar pequenas e médias empresa
    ```powershell
    cd backend
    uv sync
+   uv add pandas openpyxl google-genai
