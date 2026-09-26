@@ -1,4 +1,7 @@
+from datetime import datetime
 from typing import Dict, List
+from uuid import UUID
+
 from pydantic import BaseModel
 
 
@@ -32,6 +35,14 @@ class DiagnosticoIASchema(BaseModel):
 
 
 class AnalysisResponse(BaseModel):
+    id: UUID
+    name: str
+    file_name: str
+    status: str
     metricas: MetricasSchema
     graficos: GraficosSchema
     diagnostico: DiagnosticoIASchema
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
