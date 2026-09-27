@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.querySelector(".input_arquivo");
+  const charts = window.rastrivaCharts ?? {};
 
   if (!fileInput) return;
 
@@ -31,11 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
         metricCards[2].textContent = `Receita em risco: R$ ${data.metricas.receita_risco.toLocaleString("pt-BR")}`;
       }
 
-      //3. Atualizar Gráfico de Consumidores (Barras)
-      const chartConsumidores = Chart.getChart("chartConsumidores");
-      if (chartConsumidores) {
-        chartConsumidores.data.datasets[0].data = data.graficos.consumidores;
-        chartConsumidores.update();
+      //3. Atualizar gráfico de consumidores
+      if (charts.consumers) {
+        charts.consumers.data.datasets[0].data = data.graficos.consumidores;
+        charts.consumers.update();
       }
 
       //4. Atualizar Barras de Feedback
@@ -43,14 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("feedback-atendimento-fill").style.width = `${data.graficos.feedbacks_pct.atendimento}%`;
       document.getElementById("feedback-feedbacks-fill").style.width = `${data.graficos.feedbacks_pct.geral}%`;
 
-      //5. Atualizar Gráfico de Padrões (Linhas)
-      const chartPadroes = Chart.getChart("chartPadroes");
-      if (chartPadroes) {
-        chartPadroes.data.labels = data.graficos.padroes_labels;
-        chartPadroes.data.datasets[0].data = data.graficos.disponibilidade;
-        chartPadroes.data.datasets[1].data = data.graficos.quantidade_compras;
-        chartPadroes.data.datasets[2].data = data.graficos.receita;
-        chartPadroes.update();
+      //5. Atualizar gráfico de padrões
+      if (charts.patterns) {
+        charts.patterns.data.labels = data.graficos.padroes_labels;
+        charts.patterns.data.datasets[0].data = data.graficos.disponibilidade;
+        charts.patterns.data.datasets[1].data = data.graficos.quantidade_compras;
+        charts.patterns.data.datasets[2].data = data.graficos.receita;
+        charts.patterns.update();
       }
 
       //6. Atualizar Seção de Diagnóstico da IA

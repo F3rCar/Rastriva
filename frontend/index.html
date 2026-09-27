@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rastriva</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="vendor/chart.umd.js"></script>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -143,72 +143,6 @@
   </div>
 
 </section>
-<script>
-  // ---------- código para os gráficos funfarem ----------
-  
-  const ctxConsumidores = document.getElementById('chartConsumidores').getContext('2d');
-  new Chart(ctxConsumidores, {
-    type: 'bar',
-    data: {
-      labels: ['Clientes ativos', 'Clientes em queda', 'Clientes com possível risco', 'Clientes com histórico insuficiente'],
-      datasets: [{
-        label: 'Clientes',
-        data: [0, 0, 0, 0], // <- valores que vão colocar 
-        backgroundColor: ['#a020f0', '#3b9fe0', '#e0d63b', '#3b4fe0']
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } }
-    }
-  });
-
-  // ---------- Gráfico de linha: Principais padrões ----------
-  // Substituir os dados depois.
-  const ctxPadroes = document.getElementById('chartPadroes').getContext('2d');
-  new Chart(ctxPadroes, {
-    type: 'line',
-    data: {
-      labels: [], // <- ex: ['Jan', 'Fev', 'Mar', ...]
-      datasets: [
-        {
-          label: 'Disponibilidade',
-          data: [], // <- valores 
-          borderColor: 'red',
-          backgroundColor: 'red',
-          tension: 0.3
-        },
-        {
-          label: 'Quantidade de compras',
-          data: [], // <- valores 
-          borderColor: 'blue',
-          backgroundColor: 'blue',
-          tension: 0.3
-        },
-        {
-          label: 'Receita',
-          data: [], // <- valores 
-          borderColor: 'green',
-          backgroundColor: 'green',
-          tension: 0.3
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } }
-    }
-  });
-
-  // ---------- Barras de Feedback ----------
-  document.getElementById('feedback-preco-fill').style.width = '0%';
-  document.getElementById('feedback-atendimento-fill').style.width = '0%';
-  document.getElementById('feedback-feedbacks-fill').style.width = '0%';
-</script>
-
 <!-- ======================= DIAGNÓSTICO COM IA ======================= -->
 <section id="diagnostico" class="diagnostico">
 
@@ -271,8 +205,8 @@
   </div>
 
 </section>
-
-
+<script src="js/charts.js" defer></script>
+<script src="js/app.js" defer></script>
 
 </body>
 </html>
