@@ -1,5 +1,10 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, Helvetica, sans-serif; color: #111; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
   .placeholder {
     background: #d9d9d9;
@@ -12,20 +17,68 @@
     padding: 8px;
   }
 
+  /* ---------- INTRODUÇÃO (fundo roxo + manchas) ---------- */
+  .introducao {
+    position: relative;
+    background: #1a0a34;
+    color: #fff;
+    padding-bottom: 7px;
+    overflow: hidden;
+  }
+
+  /* manchas de luz (blur) no fundo da introdução */
+  .introducao::before,
+  .introducao::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .introducao::before {
+    width: 500px;
+    height: 500px;
+    background: #6d3bff; /* roxo */
+    top: -150px;
+    left: -100px;
+  }
+
+  .introducao::after {
+    width: 400px;
+    height: 400px;
+    background: #3d6bff; /* azul */
+    bottom: -120px;
+    right: -80px;
+  }
+
+  /* conteúdo por cima do blur */
+  .introducao > * { position: relative; z-index: 1; }
   /* ---------- HEADER ---------- */
   header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 16px 32px;
+    position: relative;
   }
   header .logo { display: flex; align-items: center; gap: 8px; font-weight: bold; }
-  header nav { display: flex; gap: 32px; }
-  header nav a { text-decoration: none; color: inherit; }
+  header nav {
+    display: flex;
+    gap: 64px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  header nav a { text-decoration: none; color: inherit; font-weight: bold; }
+  header nav a:hover { text-decoration: underline; }
   .Logo_Rastriva {
     width: 40px;
     height: 40px;
   }
+
 
   /* ---------- HERO / LANDING ---------- */
   .hero {
@@ -38,14 +91,28 @@
   .hero-content { max-width: 480px; }
   .hero-content h1 { font-size: 32px; margin-bottom: 16px; }
   .hero-content p { margin-bottom: 24px; }
- 
-  .hero-image {
-    width: 220px;
-    height: 190px;
+  .color-varch {
+    color: #c4b5fd;
+  }
+
+  .video-dashboard {
+    width: 640px;
+    max-width: 100%;
+    height: auto;         /* deixa a altura seguir a proporção do vídeo */
+    object-fit: contain;  /* mostra o vídeo inteiro, sem cortar */
+    border-radius: 12px;
     flex-shrink: 0;
+    display: block;
   }
 
   /* ---------- COMO FUNCIONA ---------- */
+  .cards-varch {
+    color: #000000;
+    font-style: oblique;
+    text-align: center;
+    text-align: justify;
+
+  }
   .how-it-works { padding: 0 32px 48px; }
   .how-it-works h2 { margin-bottom: 24px; }
   .steps {
@@ -55,12 +122,18 @@
     margin-bottom: 32px;
   }
   .step { padding: 16px; }
-  .step-label { font-size: 13px; margin-bottom: 8px; }
+  .step-label { font-size: 13px; margin-bottom: 8px; font-weight: bold; }
   .step-box { height: 90px; }
+  /* cor de fundo dos 4 primeiros cards (passos 1 a 4) */
+  .step-box.placeholder {
+    background: #e7e6eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
 
   .upload-btn {
     display: inline-block;
-    margin: 0 auto;
+    margin: auto;
     padding: 10px 20px;
     border: none;
     border-radius: 24px;
@@ -68,7 +141,7 @@
     color: #fff;
     font-weight: bold;
     cursor: pointer;
-    margin-right: 500px;
+    margin-right: 550px;
   }
   .container {
     display: flex;
@@ -88,29 +161,37 @@
     margin-bottom: 32px;
   }
   .metric-card {
-    padding: 16px;
+    padding: 20px;
     text-align: left;
     justify-content: flex-start;
-    height: 70px;
+    min-height: 70px;
+    height: auto;
+    border-radius: 8px;
   }
 
   .dashboard-row {
     display: flex;
+    align-items: stretch;
     gap: 24px;
     margin-bottom: 32px;
   }
 
-  .chart-panel { flex: 1; }
+  .chart-panel { flex: 1 1 auto; min-width: 0; }
   .chart-panel h2 { font-size: 16px; margin-bottom: 12px; text-align: center; }
   .chart-box {
-    height: 220px;
+    position: relative;
+    height: 260px;
     background: #d9d9d9;
+    border-radius: 8px;
     padding: 12px;
   }
+  .chart-box canvas { width: 100% !important; height: 100% !important; }
 
   .feedback-panel {
-    width: 220px;
+    flex: 0 0 240px;
+    width: 240px;
     background: #d9d9d9;
+    border-radius: 8px;
     padding: 16px;
   }
   .feedback-panel h3 { font-size: 14px; margin-bottom: 16px; }
@@ -150,10 +231,13 @@
   .dot-receita { background: green; }
 
   .patterns-chart-box {
-    height: 200px;
+    position: relative;
+    height: 240px;
     background: #d9d9d9;
+    border-radius: 8px;
     padding: 12px;
   }
+  .patterns-chart-box canvas { width: 100% !important; height: 100% !important; }
 
   /* ---------- DIAGNÓSTICO COM IA ---------- */
   .diagnostico { padding: 32px; }
