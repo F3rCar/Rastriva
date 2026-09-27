@@ -1,23 +1,22 @@
-from typing import Any
+from fastapi import UploadFile
+from app.ai.agent import gerar_diagnostico_ia
+from app.analysis.processor import processar_dados_cliente
 
 
-# exemplo de função service para chamar a análise dos dados
-def run_analysis(
-    vendas: bytes,
-    clientes: bytes | None = None,
-    feedbacks: bytes | None = None,
-) -> dict[str, Any]:
-    return {
-        "data_quality": {
-            "status": "pending",
-            "warnings": [],
-        },
-        "summary": {
-            "message": "Motor de análise ainda não conectado.",
-        },
-        "at_risk_customers": [],
-        "customer_metrics": [],
-        "feedback_patterns": [],
-        "recommendations": [],
-    }
+class AnalysisService:
 
+    async def process_analysis(self, file: UploadFile) -> dict:
+        content = await file.read()
+
+        # 1. Processar a planilha
+        dados = processar_dados_cliente(content, file.filename)
+
+        # 2. Gerar diagnóstico com IA
+        diagnostico = gerar_diagnostico_ia(dados["metricas"])
+
+        # 3. Retornar payload completo
+        return {
+            "metricas": dados["metricas"],
+            "graficos": dados["graficos"],
+            "diagnostico": diagnostico,
+        }

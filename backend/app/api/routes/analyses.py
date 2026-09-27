@@ -1,60 +1,48 @@
-from typing import Annotated
+from pathlib import Path
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
-
+from app.db.session import get_db
+from app.models.analysis import Analysis
 from app.schemas.analysis import AnalysisResponse
-from app.services.analysis_service import run_analysis
+from app.services.analysis_service import AnalysisService
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 router = APIRouter()
-
-MAX_UPLOAD_SIZE = 10 * 1024 * 1024
-
-
-async def read_csv_file(file: UploadFile | None) -> bytes | None:
-    if file is None:
-        return None
-
-    filename = (file.filename or "").lower()
-
-    if not filename.endswith(".csv"):
-        raise HTTPException(
-            status_code=415,
-            detail={
-                "code": "INVALID_FILE_TYPE",
-                "message": "O arquivo deve estar no formato CSV.",
-                "field": file.filename,
-            },
-        )
-
-    content = await file.read(MAX_UPLOAD_SIZE + 1)
-
-    if len(content) > MAX_UPLOAD_SIZE:
-        raise HTTPException(
-            status_code=413,
-            detail={
-                "code": "FILE_TOO_LARGE",
-                "message": "O arquivo excede o tamanho máximo permitido.",
-                "field": file.filename,
-            },
-        )
-
-    return content
+service = AnalysisService()
 
 
-@router.post("/analyses", response_model=AnalysisResponse)
+@router.post(
+    "/", response_model=AnalysisResponse, status_code=status.HTTP_200_OK
+)
 async def create_analysis(
-    vendas: Annotated[UploadFile, File()],
-    clientes: Annotated[UploadFile | None, File()] = None,
-    feedbacks: Annotated[UploadFile | None, File()] = None,
-) -> AnalysisResponse:
-    vendas_content = await read_csv_file(vendas)
-    clientes_content = await read_csv_file(clientes)
-    feedbacks_content = await read_csv_file(feedbacks)
+    file: UploadFile = File(...), db: Session = Depends(get_db)
+):
+    if not file.filename.lower().endswith((".csv", ".xlsx", ".xls")):
+        raise HTTPException(
+            status_code=400,
+            detail="Formato inválido. Envie um arquivo .csv ou .xlsx",
+        )
 
-    result = run_analysis(
-        vendas=vendas_content,
-        clientes=clientes_content,
-        feedbacks=feedbacks_content,
+    result = await service.process_analysis(file)
+    analysis = Analysis(
+        name=Path(file.filename).stem,
+        file_name=file.filename,
+        status="completed",
+        metricas=result["metricas"],
+        graficos=result["graficos"],
+        diagnostico=result["diagnostico"],
     )
 
-    return AnalysisResponse.model_validate(result)
+    try:
+        db.add(analysis)
+        db.commit()
+        db.refresh(analysis)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Não foi possível salvar a análise.",
+        ) from exc
+
+    return analysis
