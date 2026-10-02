@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, List
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class MetricasSchema(BaseModel):
@@ -46,3 +46,18 @@ class AnalysisResponse(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class AnalysisUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=1)
+    status: str | None = Field(default=None, min_length=1)
+
+    model_config = ConfigDict(extra="forbid")
+
+    @model_validator(mode="after")
+    def require_valid_changes(self) -> "AnalysisUpdate":
+        if not self.model_fields_set or any(
+            getattr(self, field) is None for field in self.model_fields_set
+        ):
+            raise ValueError("Informe name ou status com um valor não vazio.")
+        return self

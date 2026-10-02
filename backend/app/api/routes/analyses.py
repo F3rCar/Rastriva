@@ -1,15 +1,20 @@
 from pathlib import Path
+from typing import Annotated
+from uuid import UUID
 
-from app.db.session import get_db
-from app.models.analysis import Analysis
-from app.schemas.analysis import AnalysisResponse
-from app.services.analysis_service import AnalysisService
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.db.session import get_db
+from app.models.analysis import Analysis
+from app.schemas.analysis import AnalysisResponse, AnalysisUpdate
+from app.services.analysis_service import AnalysisService
+
 router = APIRouter()
 service = AnalysisService()
+DbSession = Annotated[Session, Depends(get_db)]
 
 
 @router.post(
@@ -46,3 +51,54 @@ async def create_analysis(
         ) from exc
 
     return analysis
+
+
+@router.get("/", response_model=list[AnalysisResponse])
+def list_analyses(db: DbSession):
+    try:
+        return db.scalars(
+            select(Analysis).order_by(Analysis.created_at.desc())
+        ).all()
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail="Não foi possível listar as análises."
+        ) from exc
+
+
+@router.put("/{analysis_id}", response_model=AnalysisResponse)
+def update_analysis(
+    analysis_id: UUID, changes: AnalysisUpdate, db: DbSession
+):
+    try:
+        analysis = db.get(Analysis, analysis_id)
+        if analysis is None:
+            raise HTTPException(status_code=404, detail="Análise não encontrada.")
+
+        for field, value in changes.model_dump(exclude_unset=True).items():
+            setattr(analysis, field, value)
+
+        db.commit()
+        db.refresh(analysis)
+        return analysis
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail="Não foi possível atualizar a análise."
+        ) from exc
+
+
+@router.delete("/{analysis_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_analysis(analysis_id: UUID, db: DbSession):
+    try:
+        analysis = db.get(Analysis, analysis_id)
+        if analysis is None:
+            raise HTTPException(status_code=404, detail="Análise não encontrada.")
+
+        db.delete(analysis)
+        db.commit()
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=500, detail="Não foi possível excluir a análise."
+        ) from exc
